@@ -11,7 +11,7 @@
 {% block content %}
         <div class="tags">
         {% for tag in post.tags %}
-            <span class="label text-danger"><a href="{{ url_for('posts.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></span>
+            <a class="badge badge-danger" href="{{ url_for('posts.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a>
         {% endfor %}
     </div>
     <p>{{post.body}}</p>

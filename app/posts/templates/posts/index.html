@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 {% from 'posts/macros.html' import posts_title_list %}
 
+{% if (request.args.get('search', false)) %}
+    {% set title = 'Search for "' + request.args.get('search') + '"'  %}
+{% else %}
+    {% set title = 'Posts list' %}
+{% endif %}
 
 {% block title %}
-    Post list
+    {{ title }}
 {% endblock %}
 
 {% block content_title %}
-    Posts list
+    {{ title }}
 {% endblock%}
 
 {% block content %}
