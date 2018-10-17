@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% from 'posts/macros.html' import posts_title_list %}
 
-
 {% block title %}
-    Post list
+    {{ tag.name }}
 {% endblock %}
 
 {% block content_title %}
-    Posts list
+    Posts for "{{ tag.name }}"
 {% endblock%}
 
 {% block content %}
-    {{ posts_title_list(posts) }}
+    <div class="posts">
+        {{ posts_title_list(posts) }}
+    </div>
 {% endblock %}

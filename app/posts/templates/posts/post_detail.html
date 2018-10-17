@@ -9,5 +9,10 @@
 {% endblock%}
 
 {% block content %}
+        <div class="tags">
+        {% for tag in post.tags %}
+            <span class="label text-danger"><a href="{{ url_for('posts.tag_detail', slug=tag.slug) }}">{{ tag.name }}</a></span>
+        {% endfor %}
+    </div>
     <p>{{post.body}}</p>
 {% endblock %}
