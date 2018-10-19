@@ -16,5 +16,42 @@
 {% endblock%}
 
 {% block content %}
-    {{ posts_title_list(posts) }}
+    {{ posts_title_list(pages.items) }}
+        {% if pages.total > 5 %}
+          <div class="row">
+              <div class="col-md-6">
+                <nav>
+                  <ul class="pagination">
+                    <li
+                        {% if pages.has_prev %}
+                              class="page-item"
+                         {%else %}
+                            class="page-item disabled"
+                         {% endif %}
+                      >
+                      <a class="page-link" href="./?page={{ pages.prev_num}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                      {% for page in pages.iter_pages() %}
+                        <li class="page-item {% if page == pages.page %} active {% endif %}"><a class="page-link " href="./?page={{ page }}">{{ page }}</a></li>
+                      {% endfor %}
+                    <li
+                        {% if pages.has_next %}
+                              class="page-item"
+                         {%else %}
+                            class="page-item disabled"
+                         {% endif %}
+                      >
+                      <a class="page-link" href="./?page={{ pages.prev_next}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+          </div>
+        {% endif %}
 {% endblock %}

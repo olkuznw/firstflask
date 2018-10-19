@@ -31,11 +31,21 @@ def create_post():
 @posts.route('/')
 def index():
     search = request.args.get('search')
+
+    page = request.args.get('page') # type: str
+
+    if page and page.isdigit():
+        page = int(page) # type: int
+    else:
+        page = 1 # type: int
+
     if search:
-        posts = Post.query.filter(Post.title.contains(search) | Post.body.contains(search)).all()
+        posts = Post.query.filter(Post.title.contains(search) | Post.body.contains(search)).order_by(Post.created.desc())
     else:
         posts = Post.query.order_by(Post.created.desc())
-    return render_template('posts/index.html', posts=posts)
+
+    pages = posts.paginate(page, per_page=5)
+    return render_template('posts/index.html', posts=posts, pages=pages)
 
 @posts.route('/<slug>')
 def post_detail(slug):
