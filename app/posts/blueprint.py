@@ -7,6 +7,7 @@ from flask import url_for
 from models import Post, Tag
 
 from .forms import PostForm
+from .forms import EditForm
 
 from app import db
 
@@ -26,18 +27,26 @@ def create_post():
         return redirect(url_for('posts.index'))
 
     form = PostForm()
-    return render_template('posts/create_post.html', form=form)
+    return render_template('posts/edit_post.html', form=form)
+
+@posts.route('/edit/<id>', methods=['POST', 'GET'])
+def edit_post(id):
+    post = Post.query.filter(Post.id == id).first()
+    if 'POST' == request.method:
+        form = EditForm(formdata=request.form, obj=post)
+        form.populate_obj(post)
+        db.session.commit()
+        return redirect(url_for('posts.post_detail', slug=post.slug))
+
+    form = EditForm(obj=post)
+    return render_template('posts/edit_post.html', form=form, post=post)
 
 @posts.route('/')
 def index():
     search = request.args.get('search')
 
     page = request.args.get('page') # type: str
-
-    if page and page.isdigit():
-        page = int(page) # type: int
-    else:
-        page = 1 # type: int
+    page = 1 if not (page and page.isdigit()) else int(page) # type: int
 
     if search:
         posts = Post.query.filter(Post.title.contains(search) | Post.body.contains(search)).order_by(Post.created.desc())
@@ -45,7 +54,7 @@ def index():
         posts = Post.query.order_by(Post.created.desc())
 
     pages = posts.paginate(page, per_page=5)
-    return render_template('posts/index.html', posts=posts, pages=pages)
+    return render_template('posts/index.html', pages=pages)
 
 @posts.route('/<slug>')
 def post_detail(slug):

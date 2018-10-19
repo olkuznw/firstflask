@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
 {% from 'posts/macros.html' import posts_title_list %}
 
-{% if (request.args.get('search', false)) %}
-    {% set title = 'Search for "' + request.args.get('search') + '"'  %}
-{% else %}
-    {% set title = 'Posts list' %}
-{% endif %}
+{% set title = 'Search for "' + request.args.get('search') + '"' if (request.args.get('search', false)) else 'Posts list' %}
 
 {% block title %}
     {{ title }}
@@ -44,7 +40,7 @@
                             class="page-item disabled"
                          {% endif %}
                       >
-                      <a class="page-link" href="./?page={{ pages.prev_next}}" aria-label="Next">
+                      <a class="page-link" href="./?page={{ pages.next_num }}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">Next</span>
                       </a>
