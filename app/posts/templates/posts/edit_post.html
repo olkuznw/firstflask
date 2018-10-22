@@ -3,29 +3,28 @@
 {% set title = 'Edit post "' ~ post.title ~ '"' if 'id' in form else 'Create new post' %}
 
 {% block title %}
-   {{ title }}
+{{ title }}
 {% endblock %}
 
 {% block content_title %}
-    {{ title }}
+{{ title }}
 {% endblock%}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-8">
-            <form action="{{ url_for('posts.edit_post', id=post.id) if 'id' in form else url_for('posts.create_post')}}" method="POST">
-                {% for field in form %}
-                    {% if 'id' != field.name %}
-                        <div class="form-group">
-                            {{ field.label() }}
-                            {{ field(class="form-control") }}
-                        </div>
-                    {% else %}
-                        {{ field() }}
-                    {% endif %}
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Save</button>
-            </form>
+<div class="col-sm-8">
+    <form action="{{ url_for('posts.edit_post', id=post.id) if 'id' in form else url_for('posts.create_post')}}"
+          method="POST">
+        {% for field in form %}
+        {% if 'id' != field.name %}
+        <div class="form-group">
+            {{ field.label() }}
+            {{ field(class="form-control") }}
         </div>
-    </div>
+        {% else %}
+        {{ field() }}
+        {% endif %}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
 {% endblock %}
